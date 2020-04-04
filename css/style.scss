@@ -15,6 +15,19 @@
   font-weight: 900;
   outline: none;
   cursor: none;
+  background: transparent;
+}
+
+@mixin small_laptop {
+  @media (max-width: 1280px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media (max-width: 600px) {
+    @content;
+  }
 }
 
 .thick {
@@ -34,20 +47,70 @@ body {
     display: none;
   }
 }
+
+.mbl-header {
+  display: none;
+
+  @include mobile() {
+    border-bottom: 1px solid #e9eaeb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background: #fff;
+    .logo {
+      height: 49px;
+    }
+  }
+}
+
 .app {
   height: 100vh;
   display: grid;
   box-sizing: border-box;
   overflow: hidden;
-  grid-template-columns: 1fr 3fr 1.5fr;
+  grid-template-columns: 1fr 3fr 1.2fr;
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
   > .side-bar {
     height: 100vh;
     box-sizing: border-box;
-    padding: 40px;
+    padding: 30px 40px 40px 40px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background: linear-gradient(#fdfdfd, #fff);
+
+    @include mobile {
+      position: fixed;
+      background: #fff;
+      z-index: 2;
+      box-shadow: 0 0 30px 200px #00000012;
+      top: 0;
+
+      transition: .3s ease-in-out;
+
+      &::after {
+        content: "";
+        position: fixed;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        left: 0;
+        display: block;
+        background: #ffffff00;
+        z-index: -1;
+      }
+      &.closed {
+        opacity: 0;
+        pointer-events: none;
+      }
+    }
     .logo-rapper {
       display: flex;
       justify-content: center;
@@ -61,7 +124,6 @@ body {
         background: #fdfdfd;
         border-radius: 10px;
         // transition: 0.4s ease-in-out;
-
       }
     }
     .links {
@@ -149,6 +211,12 @@ body {
         align-items: center;
         justify-content: space-between;
         margin: 0 0 15px 0;
+        @include mobile() {
+          flex-wrap: wrap;
+          padding: 30px 0;
+          margin: 0;
+          border-bottom: 1px solid #dfe0e2;
+        }
 
         .left {
           $space: 40px;
@@ -191,6 +259,9 @@ body {
         }
         .right {
           display: flex;
+          @include mobile() {
+            margin: 20px 0 0 0;
+          }
           .time {
             margin: 0 20px;
             opacity: 0.6;
@@ -201,7 +272,7 @@ body {
             border-radius: 12px;
             display: flex;
             background: #ecf6ff;
-            width: 260px;
+            width: 252px;
 
             .info {
               margin-right: 50px;
@@ -289,11 +360,11 @@ body {
           .left {
             // background: #f6f7f8;
             position: relative;
-            // border-radius: 12px;
+            border-radius: 10px;
             padding: 10px 0;
             background-image: url("../img/arrow2.svg");
             background-size: cover;
-            background-position: center;
+            background-position: right;
           }
         }
       }
@@ -302,6 +373,9 @@ body {
   > .lst {
     // padding: 40px;
     padding-top: 0;
+    @include mobile {
+      display: none;
+    }
     .header {
       padding: 40px;
       background: #fff;
@@ -313,40 +387,6 @@ body {
       top: 0;
       z-index: 2;
       box-shadow: 0 4px 10px 0 rgba(68, 68, 68, 0.02);
-      .profile-btn {
-        min-width: 90px;
-        background: #f6f7f8;
-        border-top-right-radius: 13px;
-        border-bottom-right-radius: 13px;
-        border-top-left-radius: 30px;
-        border-bottom-left-radius: 30px;
-        padding: 5px;
-        box-shadow: inset 0 4px 10px 0 rgba(68, 68, 68, 0.03);
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-
-        > img {
-          width: 18px;
-          height: auto;
-          margin: 0 auto;
-        }
-
-        .dp-rapper {
-          height: 40px;
-          width: 40px;
-          background: $theme;
-          display: block;
-          border-radius: 100vh;
-          cursor: pointer;
-          background: #fff;
-          > img {
-            height: 100%;
-            width: 100%;
-            border-radius: inherit;
-          }
-        }
-      }
     }
     .container {
       padding: 40px;
@@ -410,13 +450,14 @@ body {
         border-top: 1px solid #e4e4e4;
         padding: 30px 0;
         margin: 60px 0;
+        flex-wrap: wrap;
         .bg-theme {
           padding: 10px 20px;
           border-radius: 10px;
         }
         button,
         a {
-          margin: 0 20px;
+          margin: 0 20px 20px 20px;
         }
       }
     }
@@ -425,6 +466,48 @@ body {
   .lst,
   .mid {
     overflow: auto;
+  }
+  .side-bar,
+  .mid {
+    @include small_laptop {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+  }
+}
+
+.profile-btn {
+  min-width: 90px;
+  background: #f6f7f8;
+  border-top-right-radius: 13px;
+  border-bottom-right-radius: 13px;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  padding: 5px;
+  box-shadow: inset 0 4px 10px 0 rgba(68, 68, 68, 0.03);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  > img {
+    width: 18px;
+    height: auto;
+    margin: 0 auto;
+  }
+
+  .dp-rapper {
+    height: 40px;
+    width: 40px;
+    background: $theme;
+    display: block;
+    border-radius: 100vh;
+    cursor: pointer;
+    background: #fff;
+    > img {
+      height: 100%;
+      width: 100%;
+      border-radius: inherit;
+    }
   }
 }
 
@@ -483,6 +566,9 @@ body {
   top: 0;
   border-radius: 100vh;
   z-index: 4;
+  @include mobile {
+    display: none;
+  }
   &.slower {
     transition: 0.2s ease;
     height: 30px;

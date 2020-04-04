@@ -8,25 +8,31 @@ for (let x = 0; x < to_b_dropped.length; x++) {
   to_b_dropped[x].style.animationDelay = `${x * 0.1}s`;
 }
 
-window.addEventListener("load", function() {
+document.querySelectorAll(".js-side-bar").forEach((e) => {
+  e.addEventListener("click", (ev) => {
+    document.querySelector(".side-bar").classList.toggle("closed");
+  });
+});
+
+window.addEventListener("load", function () {
   main_bg.style.animationName = `reduce`;
   setTimeout(() => {
-    to_b_dropped.forEach(e => {
+    to_b_dropped.forEach((e) => {
       e.style.animationName = "drop";
     });
-    to_b_scale.forEach(e => {
+    to_b_scale.forEach((e) => {
       e.style.animationName = "scale";
     });
   }, 1000);
 });
 
-window.addEventListener("mousemove", function(ev) {
+window.addEventListener("mousemove", function (ev) {
   let x = ev.clientX;
   let y = ev.clientY;
 
   this.console.log("move");
 
-  cursor.forEach(e => {
+  cursor.forEach((e) => {
     e.style.top = `${y}px`;
     e.style.left = `${x}px`;
   });
